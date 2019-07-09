@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"satellite_calculator/models"
 )
 
@@ -15,7 +15,7 @@ func (c *SateController) Get() {
 	name := c.GetString("name")
 	sateInfo, err := models.GetSatellite(name)
 	if err != nil {
-		fmt.Println("satellite get error, err: ", err)
+		logs.Error("satellite get error, err: ", err)
 		c.Data["json"] = models.Satellite{}
 	} else {
 		c.Data["json"] = sateInfo
@@ -25,9 +25,14 @@ func (c *SateController) Get() {
 
 func (c *SateController) Post() {
 	sateInfo := models.Satellite{}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &sateInfo)
+	err := json.Unmarshal(c.Ctx.Input.RequestBody, &sateInfo)
+	if err != nil {
+		logs.Error("satellite post error, err: ", err)
+		c.Abort("500")
+	}
 	result, err := models.AddSate(sateInfo)
 	if err != nil {
+		logs.Error("satellite post error, err: ", err)
 		c.Abort("403")
 	}
 	c.Data["json"] = result

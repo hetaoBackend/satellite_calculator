@@ -2,8 +2,9 @@ package models
 
 import (
 	"errors"
-	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/orm"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Satellite struct {
@@ -24,13 +25,13 @@ func GetSatellite(name string) (*Satellite, error) {
 	DB := orm.NewOrm()
 	err := DB.Read(&p2, "Name")
 	if err == orm.ErrNoRows {
-		fmt.Println("查询不到")
+		logs.Error("查询不到")
 		return &Satellite{}, err
 	} else if err == orm.ErrMissPK {
-		fmt.Println("找不到主键")
+		logs.Error("找不到主键")
 		return &Satellite{}, err
 	} else {
-		fmt.Println(p2)
+		logs.Info(p2)
 	}
 	return &p2, nil
 }
@@ -43,15 +44,16 @@ func AddSate(sateInfo Satellite) (Satellite, error) {
 	p2 := Satellite{Name: sateInfo.Name}
 	err := DB.Read(&p2, "Name")
 	if err == orm.ErrNoRows {
+		logs.Info("insert satellite info, name: ", sateInfo.Name)
 		id, err := DB.Insert(&sateInfo)
 		if err != nil {
-			fmt.Println("insert sateInfo error: ", err)
+			logs.Error("insert sateInfo error: ", err)
 			return Satellite{}, err
 		}
 		sateInfo.Id = int(id)
 		return sateInfo, nil
 	} else if err == orm.ErrMissPK {
-		fmt.Println("找不到主键")
+		logs.Error("找不到主键")
 		return Satellite{}, err
 	}
 	if sateInfo.GT != 0 {
@@ -66,6 +68,7 @@ func AddSate(sateInfo Satellite) (Satellite, error) {
 	if sateInfo.Longitude != 0{
 		p2.Longitude = sateInfo.Longitude
 	}
+	logs.Info("update satellite info, name: ", sateInfo.Name)
 	DB.Update(&p2)
 	return p2, nil
 }
