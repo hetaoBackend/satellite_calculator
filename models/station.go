@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
 )
@@ -37,12 +38,36 @@ func GetStation(name string) (*Station, error) {
 
 // ToDo: add station info to DB
 func AddStation(stationInfo Station) (Station, error) {
+	if stationInfo.Diameter == 0 && stationInfo.RGT == 0 && stationInfo.TG == 0 && stationInfo.TPower == 0 {
+		return Station{}, errors.New("invalid params")
+	}
 	DB := orm.NewOrm()
-	id, err := DB.Insert(&stationInfo)
-	if err != nil {
-		fmt.Println("insert cityInfo error: ", err)
+	p2 := Station{Name: stationInfo.Name}
+	err := DB.Read(&p2, "Name")
+	if err == orm.ErrNoRows {
+		id, err := DB.Insert(&stationInfo)
+		if err != nil {
+			fmt.Println("insert stationInfo error: ", err)
+			return Station{}, err
+		}
+		stationInfo.Id = int(id)
+		return stationInfo, nil
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
 		return Station{}, err
 	}
-	stationInfo.Id = int(id)
-	return stationInfo, nil
+	if stationInfo.TPower != 0{
+		p2.TPower = stationInfo.TPower
+	}
+	if stationInfo.TG != 0{
+		p2.TG = stationInfo.TG
+	}
+	if stationInfo.RGT != 0 {
+		p2.RGT = stationInfo.RGT
+	}
+	if stationInfo.Diameter != 0 {
+		p2.Diameter = stationInfo.Diameter
+	}
+	DB.Update(&p2)
+	return p2, nil
 }

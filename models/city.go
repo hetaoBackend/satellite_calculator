@@ -1,16 +1,17 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 type City struct {
-	Id int `orm:"pk"`
-	Name string
+	Id        int `orm:"pk"`
+	Name      string
 	Longitude float32
-	Latitude float32
+	Latitude  float32
 }
 
 func GetCity(name string) (*City, error) {
@@ -34,14 +35,31 @@ func GetCity(name string) (*City, error) {
 	return &p2, nil
 }
 
-// ToDo: add city info to DB
 func AddCity(cityInfo City) (City, error) {
+	if cityInfo.Longitude == 0 && cityInfo.Latitude == 0 {
+		return City{}, errors.New("invalid params")
+	}
 	DB := orm.NewOrm()
-	id, err := DB.Insert(&cityInfo)
-	if err != nil {
-		fmt.Println("insert cityInfo error: ", err)
+	p2 := City{Name: cityInfo.Name}
+	err := DB.Read(&p2, "Name")
+	if err == orm.ErrNoRows {
+		id, err := DB.Insert(&cityInfo)
+		if err != nil {
+			fmt.Println("insert cityInfo error: ", err)
+			return City{}, err
+		}
+		cityInfo.Id = int(id)
+		return cityInfo, nil
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
 		return City{}, err
 	}
-	cityInfo.Id = int(id)
-	return cityInfo, nil
+	if cityInfo.Latitude != 0 {
+		p2.Latitude = cityInfo.Latitude
+	}
+	if cityInfo.Longitude != 0 {
+		p2.Longitude = cityInfo.Longitude
+	}
+	DB.Update(&p2)
+	return p2, nil
 }

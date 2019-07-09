@@ -1,16 +1,17 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/orm"
 )
 
 type Satellite struct {
-	Id int `orm:"pk"`
-	Name string
-	GT float32
-	SFD float32
-	EIRP float32
+	Id        int `orm:"pk"`
+	Name      string
+	GT        float32
+	SFD       float32
+	EIRP      float32
 	Longitude float32
 }
 
@@ -34,14 +35,37 @@ func GetSatellite(name string) (*Satellite, error) {
 	return &p2, nil
 }
 
-// ToDo: add satellite info to DB
 func AddSate(sateInfo Satellite) (Satellite, error) {
+	if sateInfo.EIRP == 0 && sateInfo.Longitude == 0 && sateInfo.GT == 0 && sateInfo.SFD == 0 {
+		return Satellite{}, errors.New("invalid params")
+	}
 	DB := orm.NewOrm()
-	id, err := DB.Insert(&sateInfo)
-	if err != nil {
-		fmt.Println("insert sateInfo error: ", err)
+	p2 := Satellite{Name: sateInfo.Name}
+	err := DB.Read(&p2, "Name")
+	if err == orm.ErrNoRows {
+		id, err := DB.Insert(&sateInfo)
+		if err != nil {
+			fmt.Println("insert sateInfo error: ", err)
+			return Satellite{}, err
+		}
+		sateInfo.Id = int(id)
+		return sateInfo, nil
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
 		return Satellite{}, err
 	}
-	sateInfo.Id = int(id)
-	return sateInfo, nil
+	if sateInfo.GT != 0 {
+		p2.GT = sateInfo.GT
+	}
+	if sateInfo.SFD != 0{
+		p2.SFD = sateInfo.SFD
+	}
+	if sateInfo.EIRP != 0{
+		p2.EIRP = sateInfo.EIRP
+	}
+	if sateInfo.Longitude != 0{
+		p2.Longitude = sateInfo.Longitude
+	}
+	DB.Update(&p2)
+	return p2, nil
 }

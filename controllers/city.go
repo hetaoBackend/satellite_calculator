@@ -26,7 +26,10 @@ func (c *CityController) Get() {
 func (c *CityController) Post() {
 	cityInfo := models.City{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &cityInfo)
-	result,_ := models.AddCity(cityInfo)
+	result, err := models.AddCity(cityInfo)
+	if err != nil {
+		c.Abort("403")
+	}
 	c.Data["json"] = result
 	c.ServeJSON()
 }

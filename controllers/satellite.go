@@ -13,7 +13,6 @@ type SateController struct {
 
 func (c *SateController) Get() {
 	name := c.GetString("name")
-	fmt.Println(name)
 	sateInfo, err := models.GetSatellite(name)
 	if err != nil {
 		fmt.Println("satellite get error, err: ", err)
@@ -27,7 +26,10 @@ func (c *SateController) Get() {
 func (c *SateController) Post() {
 	sateInfo := models.Satellite{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &sateInfo)
-	result, _ := models.AddSate(sateInfo)
+	result, err := models.AddSate(sateInfo)
+	if err != nil {
+		c.Abort("403")
+	}
 	c.Data["json"] = result
 	c.ServeJSON()
 }

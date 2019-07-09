@@ -26,7 +26,10 @@ func (c *StationController) Get() {
 func (c *StationController) Post() {
 	stationInfo := models.Station{}
 	json.Unmarshal(c.Ctx.Input.RequestBody, &stationInfo)
-	result ,_ := models.AddStation(stationInfo)
+	result, err := models.AddStation(stationInfo)
+	if err != nil {
+		c.Abort("403")
+	}
 	c.Data["json"] = result
 	c.ServeJSON()
 }
