@@ -3,6 +3,7 @@ package models
 import "fmt"
 
 type StationInfo struct {
+	Name string
 	Diameter float32
 	TPower float32
 	TG float32

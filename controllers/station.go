@@ -11,7 +11,7 @@ type StationController struct {
 }
 
 func (c *StationController) Get() {
-	stationInfo := &models.StationInfo{Diameter: 0.5, TPower:3, TG:21.5, RGT:-1}
+	stationInfo := &models.StationInfo{Name:"0.5m用户站", Diameter: 0.5, TPower:3, TG:21.5, RGT:-1}
 	c.Data["json"] = stationInfo
 	c.ServeJSON()
 }

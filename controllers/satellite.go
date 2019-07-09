@@ -11,7 +11,7 @@ type SateController struct {
 }
 
 func (c *SateController) Get() {
-	myStruct := &models.SatelliteInfo{Name: "ST-2号", GT: 1, SFD: -90, EIRP: 46, Longtitude: 98.2}
+	myStruct := &models.SatelliteInfo{Name: "ST-2号", GT: 1, SFD: -90, EIRP: 46, Longitude: 98.2}
 	c.Data["json"] = myStruct
 	c.ServeJSON()
 }

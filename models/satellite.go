@@ -7,7 +7,7 @@ type SatelliteInfo struct {
 	GT float32
 	SFD float32
 	EIRP float32
-	Longtitude float32
+	Longitude float32
 }
 
 // ToDo: add satellite info to DB
