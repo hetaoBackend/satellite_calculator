@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/astaxie/beego"
 	"satellite_calculator/models"
 )
@@ -11,17 +12,22 @@ type SateController struct {
 }
 
 func (c *SateController) Get() {
-	myStruct := &models.SatelliteInfo{Name: "ST-2号", GT: 1, SFD: -90, EIRP: 46, Longitude: 98.2}
-	c.Data["json"] = myStruct
+	name := c.GetString("name")
+	fmt.Println(name)
+	sateInfo, err := models.GetSatellite(name)
+	if err != nil {
+		fmt.Println("satellite get error, err: ", err)
+		c.Data["json"] = models.Satellite{}
+	} else {
+		c.Data["json"] = sateInfo
+	}
 	c.ServeJSON()
 }
 
 func (c *SateController) Post() {
-	ob := models.SatelliteInfo{}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &ob)
-	id, _ := models.AddSate(ob)
-	data, _ := json.Marshal(map[string]int{"id": id})
-	str := string(data[:])
-	c.Data["json"] = str
+	sateInfo := models.Satellite{}
+	json.Unmarshal(c.Ctx.Input.RequestBody, &sateInfo)
+	result, _ := models.AddSate(sateInfo)
+	c.Data["json"] = result
 	c.ServeJSON()
 }
