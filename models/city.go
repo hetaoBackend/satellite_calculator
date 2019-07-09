@@ -26,10 +26,30 @@ type City struct {
 	Latitude float32
 }
 
+func GetCity(name string) (*City, error) {
+	if name == "" {
+		return &City{}, nil
+	}
+	fmt.Println(name)
+	p2 := City{Name: name}
+	// 查询
+	DB := orm.NewOrm()
+	err := DB.Read(&p2, "Name")
+	if err == orm.ErrNoRows {
+		fmt.Println("查询不到")
+		return &City{}, err
+	} else if err == orm.ErrMissPK {
+		fmt.Println("找不到主键")
+		return &City{}, err
+	} else {
+		fmt.Println(p2)
+	}
+	return &p2, nil
+}
+
 // ToDo: add city info to DB
 func AddCity(cityInfo City) (int64, error) {
 	DB := orm.NewOrm()
-	fmt.Println(cityInfo)
 	id, err := DB.Insert(&cityInfo)
 	if err != nil {
 		fmt.Println("insert cityInfo error: ", err)
