@@ -20,3 +20,12 @@ A web satellite link calculator
     - Use mysql docker to be a backend database
     - **ToDo**: 
         - Dockerize the project  
+        
+- version 0.1.0
+    - Restful Api for station, satellite and city
+    - Calculate with specific station and satellite for all frequency types
+    - Use mysql docker to be a backend database
+    - Use swagger
+        - http://127.0.0.1:8080/swagger/index.html
+    - **ToDo**: 
+        - Dockerize the project 

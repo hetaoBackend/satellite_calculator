@@ -1,0 +1,391 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "beego satellite_calculate API",
+        "description": "beego has a very cool tools to autogenerate documents for your API",
+        "version": "1.0.0",
+        "termsOfService": "http://beego.me/",
+        "contact": {
+            "email": "hetao7@pku.edu.cn"
+        }
+    },
+    "basePath": "/v1",
+    "paths": {
+        "/calculate/": {
+            "post": {
+                "tags": [
+                    "calculate"
+                ],
+                "description": "calculate link_budget",
+                "operationId": "CalculateController.post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The CalculateRequest content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.CalculateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.CalculateResponse"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/city/": {
+            "get": {
+                "tags": [
+                    "city"
+                ],
+                "description": "Get city",
+                "operationId": "CityController.get",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of city",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.City"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "city"
+                ],
+                "description": "create/modify city",
+                "operationId": "CityController.post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The city content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.City"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.City"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/satellite/": {
+            "get": {
+                "tags": [
+                    "satellite"
+                ],
+                "description": "Get station",
+                "operationId": "SateController.get",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of satellite",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fre_type",
+                        "description": "the frequency type of satellite",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Satellite"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "satellite"
+                ],
+                "description": "create/modify satellite",
+                "operationId": "SateController.post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The satellite content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Satellite"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Satellite"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/station/": {
+            "get": {
+                "tags": [
+                    "station"
+                ],
+                "description": "Get Station",
+                "operationId": "StationController.get",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of station",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fre_type",
+                        "description": "the frequency type of station",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Station"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "station"
+                ],
+                "description": "create/modify station",
+                "operationId": "StationController.post",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The station content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Station"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.Station"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.CalculateRequest": {
+            "title": "CalculateRequest",
+            "type": "object",
+            "properties": {
+                "BOi": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "BOo": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "DecThreshold": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "DownFrequency": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "FreType": {
+                    "type": "string"
+                },
+                "RCityName": {
+                    "type": "string"
+                },
+                "RStationName": {
+                    "type": "string"
+                },
+                "SateName": {
+                    "type": "string"
+                },
+                "TCityName": {
+                    "type": "string"
+                },
+                "TStationName": {
+                    "type": "string"
+                },
+                "UpFrequency": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "models.CalculateResponse": {
+            "title": "CalculateResponse",
+            "type": "object",
+            "properties": {
+                "DownCN0": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "MaxBitRate": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "PowerRatio": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "TotalCN0": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "UpCN0": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "models.City": {
+            "title": "City",
+            "type": "object",
+            "properties": {
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Latitude": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "Longitude": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "Name": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Satellite": {
+            "title": "Satellite",
+            "type": "object",
+            "properties": {
+                "EIRP": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "FreType": {
+                    "type": "string"
+                },
+                "GT": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Longitude": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "SFD": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "models.Station": {
+            "title": "Station",
+            "type": "object",
+            "properties": {
+                "Diameter": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "FreType": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "Name": {
+                    "type": "string"
+                },
+                "RGT": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "TG": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "TPower": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        }
+    }
+}

@@ -1,3 +1,8 @@
+// @APIVersion 1.0.0
+// @Title beego satellite_calculate API
+// @Description beego has a very cool tools to autogenerate documents for your API
+// @Contact hetao7@pku.edu.cn
+// @TermsOfServiceUrl http://beego.me/
 package routers
 
 import (
@@ -6,9 +11,28 @@ import (
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
-	beego.Router("/satellite", &controllers.SateController{})
-	beego.Router("/station", &controllers.StationController{})
-	beego.Router("/city", &controllers.CityController{})
-	beego.Router("/calculate", &controllers.CalculateController{})
+	ns := beego.NewNamespace("/v1",
+		// 注释二处
+		beego.NSNamespace("/satellite",
+			beego.NSInclude(
+				&controllers.SateController{},
+			),
+		),
+		beego.NSNamespace("/station",
+			beego.NSInclude(
+				&controllers.StationController{},
+			),
+		),
+		beego.NSNamespace("/city",
+			beego.NSInclude(
+				&controllers.CityController{},
+			),
+		),
+		beego.NSNamespace("/calculate",
+			beego.NSInclude(
+				&controllers.CalculateController{},
+			),
+		),
+	)
+	beego.AddNamespace(ns)
 }
