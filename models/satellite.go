@@ -37,6 +37,9 @@ func GetSatellite(name string) (*Satellite, error) {
 }
 
 func AddSate(sateInfo Satellite) (Satellite, error) {
+	if sateInfo.Name == "" {
+		return Satellite{}, errors.New("invalid params")
+	}
 	if sateInfo.EIRP == 0 && sateInfo.Longitude == 0 && sateInfo.GT == 0 && sateInfo.SFD == 0 {
 		return Satellite{}, errors.New("invalid params")
 	}

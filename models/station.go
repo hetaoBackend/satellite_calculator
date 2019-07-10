@@ -37,6 +37,9 @@ func GetStation(name string) (*Station, error) {
 }
 
 func AddStation(stationInfo Station) (Station, error) {
+	if stationInfo.Name == "" {
+		return Station{}, errors.New("invalid params")
+	}
 	if stationInfo.Diameter == 0 && stationInfo.RGT == 0 && stationInfo.TG == 0 && stationInfo.TPower == 0 {
 		return Station{}, errors.New("invalid params")
 	}

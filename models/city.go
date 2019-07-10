@@ -35,6 +35,9 @@ func GetCity(name string) (*City, error) {
 }
 
 func AddCity(cityInfo City) (City, error) {
+	if cityInfo.Name == "" {
+		return City{}, errors.New("invalid params")
+	}
 	if cityInfo.Longitude == 0 && cityInfo.Latitude == 0 {
 		return City{}, errors.New("invalid params")
 	}
