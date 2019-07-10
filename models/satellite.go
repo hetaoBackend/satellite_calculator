@@ -10,20 +10,21 @@ import (
 type Satellite struct {
 	Id        int `orm:"pk"`
 	Name      string
+	FreType   string
 	GT        float32
 	SFD       float32
 	EIRP      float32
 	Longitude float32
 }
 
-func GetSatellite(name string) (*Satellite, error) {
-	if name == "" {
-		return &Satellite{}, nil
+func GetSatellite(name, freType string) (*Satellite, error) {
+	if name == "" || freType == "" {
+		return &Satellite{}, errors.New("invalid params")
 	}
-	p2 := Satellite{Name: name}
+	p2 := Satellite{Name: name, FreType:freType}
 	// 查询
 	DB := orm.NewOrm()
-	err := DB.Read(&p2, "Name")
+	err := DB.Read(&p2, "Name", "FreType")
 	if err == orm.ErrNoRows {
 		logs.Error("查询不到")
 		return &Satellite{}, err
@@ -37,15 +38,15 @@ func GetSatellite(name string) (*Satellite, error) {
 }
 
 func AddSate(sateInfo Satellite) (Satellite, error) {
-	if sateInfo.Name == "" {
+	if sateInfo.Name == "" || sateInfo.FreType == "" {
 		return Satellite{}, errors.New("invalid params")
 	}
 	if sateInfo.EIRP == 0 && sateInfo.Longitude == 0 && sateInfo.GT == 0 && sateInfo.SFD == 0 {
 		return Satellite{}, errors.New("invalid params")
 	}
 	DB := orm.NewOrm()
-	p2 := Satellite{Name: sateInfo.Name}
-	err := DB.Read(&p2, "Name")
+	p2 := Satellite{Name: sateInfo.Name, FreType: sateInfo.FreType}
+	err := DB.Read(&p2, "Name", "FreType")
 	if err == orm.ErrNoRows {
 		logs.Info("insert satellite info, name: ", sateInfo.Name)
 		id, err := DB.Insert(&sateInfo)

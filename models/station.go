@@ -10,20 +10,21 @@ import (
 type Station struct {
 	Id int `orm:"pk"`
 	Name string
+	FreType string
 	Diameter float32
 	TPower float32
 	TG float32
 	RGT float32
 }
 
-func GetStation(name string) (*Station, error) {
-	if name == "" {
-		return &Station{}, nil
+func GetStation(name, freType string) (*Station, error) {
+	if name == "" || freType == "" {
+		return &Station{}, errors.New("invalid params")
 	}
-	p2 := Station{Name: name}
+	p2 := Station{Name: name, FreType: freType}
 	// 查询
 	DB := orm.NewOrm()
-	err := DB.Read(&p2, "Name")
+	err := DB.Read(&p2, "Name", "FreType")
 	if err == orm.ErrNoRows {
 		logs.Error("查询不到")
 		return &Station{}, err
@@ -37,15 +38,15 @@ func GetStation(name string) (*Station, error) {
 }
 
 func AddStation(stationInfo Station) (Station, error) {
-	if stationInfo.Name == "" {
+	if stationInfo.Name == "" || stationInfo.FreType == "" {
 		return Station{}, errors.New("invalid params")
 	}
 	if stationInfo.Diameter == 0 && stationInfo.RGT == 0 && stationInfo.TG == 0 && stationInfo.TPower == 0 {
 		return Station{}, errors.New("invalid params")
 	}
 	DB := orm.NewOrm()
-	p2 := Station{Name: stationInfo.Name}
-	err := DB.Read(&p2, "Name")
+	p2 := Station{Name: stationInfo.Name, FreType: stationInfo.FreType}
+	err := DB.Read(&p2, "Name", "FreType")
 	if err == orm.ErrNoRows {
 		id, err := DB.Insert(&stationInfo)
 		if err != nil {

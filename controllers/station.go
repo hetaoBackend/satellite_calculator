@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"satellite_calculator/models"
+	"strings"
 )
 
 type StationController struct {
@@ -13,10 +14,11 @@ type StationController struct {
 
 func (c *StationController) Get() {
 	name := c.GetString("name")
-	stationInfo, err := models.GetStation(name)
+	freType := strings.ToLower(c.GetString("fre_type"))
+	stationInfo, err := models.GetStation(name, freType)
 	if err != nil {
 		logs.Error("station get error, err: ", err)
-		c.Data["json"] = models.City{}
+		c.Data["json"] = models.Station{}
 	} else {
 		c.Data["json"] = stationInfo
 	}

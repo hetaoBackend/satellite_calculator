@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	"satellite_calculator/models"
+	"strings"
 )
 
 type SateController struct {
@@ -13,7 +14,8 @@ type SateController struct {
 
 func (c *SateController) Get() {
 	name := c.GetString("name")
-	sateInfo, err := models.GetSatellite(name)
+	freType := strings.ToLower(c.GetString("fre_type"))
+	sateInfo, err := models.GetSatellite(name, freType)
 	if err != nil {
 		logs.Error("satellite get error, err: ", err)
 		c.Data["json"] = models.Satellite{}

@@ -13,3 +13,10 @@ A web satellite link calculator
     - **ToDo**: 
         - Dockerize the project  
         - Add ka and c logic
+
+- version 0.0.2
+    - Restful Api for station, satellite and city
+    - Calculate with specific station and satellite for all frequency types
+    - Use mysql docker to be a backend database
+    - **ToDo**: 
+        - Dockerize the project  

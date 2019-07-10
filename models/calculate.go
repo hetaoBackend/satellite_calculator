@@ -8,6 +8,9 @@ import (
 
 type CalculateRequest struct {
 	SateName      string
+	UpFrequency   float32
+	DownFrequency float32
+	FreType       string
 	TStationName  string
 	RStationName  string
 	TCityName     string
@@ -29,17 +32,17 @@ func Calculate(calculateInfo CalculateRequest) (CalculateResponse, error) {
 	if calculateInfo.SateName == "" || calculateInfo.TStationName == "" || calculateInfo.RStationName == "" {
 		return CalculateResponse{}, errors.New("invalid params")
 	}
-	sateInfo, err := GetSatellite(calculateInfo.SateName)
+	sateInfo, err := GetSatellite(calculateInfo.SateName, calculateInfo.FreType)
 	if err != nil {
 		logs.Error("Get satellite info err: ", err)
 		return CalculateResponse{}, err
 	}
-	tStationInfo, err := GetStation(calculateInfo.TStationName)
+	tStationInfo, err := GetStation(calculateInfo.TStationName, calculateInfo.FreType)
 	if err != nil {
 		logs.Error("Get transmit station info err: ", err)
 		return CalculateResponse{}, err
 	}
-	rStationInfo, err := GetStation(calculateInfo.RStationName)
+	rStationInfo, err := GetStation(calculateInfo.RStationName, calculateInfo.FreType)
 	if err != nil {
 		logs.Error("Get receive station info err: ", err)
 		return CalculateResponse{}, err
@@ -55,16 +58,15 @@ func Calculate(calculateInfo CalculateRequest) (CalculateResponse, error) {
 		return CalculateResponse{}, err
 	}
 
-	upFrequency := 14.25
-	downFrequency := 12.5
+	logs.Info("[%s] The uplink frequency is %v, the downlink frequency is %v", calculateInfo.FreType, calculateInfo.UpFrequency, calculateInfo.DownFrequency)
 
 	r := 42164.2
 	Re := 6378.155
 	tStationDis := math.Sqrt(r*r + Re * Re - 2*Re*r*math.Cos(float64(tCityInfo.Latitude/180) * math.Pi) * math.Cos(float64((tCityInfo.Longitude - sateInfo.Longitude)/180) * math.Pi))
 	rStationDis := math.Sqrt(r*r + Re * Re - 2*Re*r*math.Cos(float64(rCityInfo.Latitude/180) * math.Pi) * math.Cos(float64((rCityInfo.Longitude - sateInfo.Longitude)/180) * math.Pi))
 
-	upLoss := 92.45 + 20*math.Log10(upFrequency*tStationDis)
-	downLoss := 92.45 + 20*math.Log10(downFrequency*rStationDis)
+	upLoss := 92.45 + 20*math.Log10(float64(calculateInfo.UpFrequency)*tStationDis)
+	downLoss := 92.45 + 20*math.Log10(float64(calculateInfo.DownFrequency)*rStationDis)
 
 	tEIRP := tStationInfo.TPower + tStationInfo.TG
 

@@ -3,6 +3,7 @@ create table satellite
 	id int(11) unsigned auto_increment
 		primary key,
 	name varchar(50) not null,
+	fre_type varchar(50) not null,
 	g_t decimal(5,1) not null,
 	s_f_d decimal(5,1) null,
 	e_i_r_p decimal(5,1) not null,
@@ -14,6 +15,7 @@ create table station
 	id int(11) unsigned auto_increment
 		primary key,
 	name varchar(50) not null,
+	fre_type varchar(50) not null,
 	diameter decimal(5,1) not null,
 	t_power decimal(5,1) null,
 	t_g decimal(5,1) not null,
