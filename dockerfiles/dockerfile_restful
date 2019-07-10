@@ -1,0 +1,15 @@
+FROM golang
+MAINTAINER hetao <hetao7@pku.edu.cn>
+
+ADD views /satellite_calculator/views
+ADD conf /satellite_calculator/conf
+ADD static /satellite_calculator/static
+ADD satellite_calculator /satellite_calculator/satellite_calculator
+ADD swagger /satellite_calculator/swagger
+
+EXPOSE 8080
+
+VOLUME ["/satellite_calculator/log"]
+
+WORKDIR /satellite_calculator
+ENTRYPOINT ["./satellite_calculator"]

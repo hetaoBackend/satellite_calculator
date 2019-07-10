@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	if beego.BConfig.RunMode == "dev" {
+	if beego.BConfig.RunMode == "dev" || beego.BConfig.RunMode == "docker" {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
-	logs.SetLogger("file", `{"filename":"service.log"}`)
+	logs.SetLogger("file", `{"filename":"log/service.log"}`)
 	beego.Run()
 }
 

@@ -14,3 +14,4 @@
 satellite_calculator
 .idea/
 *.log
+mysqldata/

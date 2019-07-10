@@ -1,5 +1,5 @@
 // @APIVersion 1.0.0
-// @Title beego satellite_calculate API
+// @Title beego satellite_calculator API
 // @Description beego has a very cool tools to autogenerate documents for your API
 // @Contact hetao7@pku.edu.cn
 // @TermsOfServiceUrl http://beego.me/
