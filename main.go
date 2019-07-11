@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/astaxie/beego/logs"
+	"os"
 	_ "satellite_calculator/routers"
 	"github.com/astaxie/beego"
 )
@@ -11,7 +12,16 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
-	logs.SetLogger("file", `{"filename":"log/service.log"}`)
+	err := os.MkdirAll("log/", 0775)
+	if err != nil {
+		logs.Error("mkdir log error: ", err)
+		return
+	}
+	err = logs.SetLogger("file", `{"filename":"logs/service.log"}`)
+	if err != nil {
+		logs.Error("set logger error: ", err)
+		return
+	}
 	beego.Run()
 }
 

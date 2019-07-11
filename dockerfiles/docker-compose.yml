@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 services:
   satellite_calculator:
     build:
@@ -9,10 +9,14 @@ services:
     container_name: satellite_calculator
     environment:
       - WAIT_FOR=link_budget_db
-      - WAIT_FOR_PORT=13306
+      - WAIT_FOR_PORT=3306
     volumes:
-      - "./log/:/satellite_calculator/log/"
+      - "./logs/:/satellite_calculator/logs/"
+    restart: on-failure
     depends_on:
+      link_budget_db:
+        condition: service_healthy
+    links:
       - link_budget_db
     ports:
       - 8080:8080
@@ -29,6 +33,12 @@ services:
       - MYSQL_DATABASE=link_budget
     volumes:
       - "./mysqldata:/var/lib/mysql"
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "root"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     ports:
       - 13306:3306
 

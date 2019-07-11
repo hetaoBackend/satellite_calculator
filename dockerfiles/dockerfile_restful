@@ -9,7 +9,7 @@ ADD swagger /satellite_calculator/swagger
 
 EXPOSE 8080
 
-VOLUME ["/satellite_calculator/log"]
+VOLUME ["/satellite_calculator/logs"]
 
 WORKDIR /satellite_calculator
 ENTRYPOINT ["./satellite_calculator"]
