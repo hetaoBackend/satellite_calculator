@@ -1,6 +1,6 @@
-// @APIVersion 1.0.0
-// @Title beego satellite_calculator API
-// @Description beego has a very cool tools to autogenerate documents for your API
+// @APIVersion 1.0.1
+// @Title satellite_calculator API
+// @Description An useful tool to do the satellite link budget calculate
 // @Contact hetao7@pku.edu.cn
 // @TermsOfServiceUrl http://beego.me/
 package routers

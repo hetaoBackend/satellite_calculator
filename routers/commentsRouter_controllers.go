@@ -27,6 +27,33 @@ func init() {
 
     beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"],
         beego.ControllerComments{
+            Method: "DeleteCity",
+            Router: `/`,
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"],
+        beego.ControllerComments{
+            Method: "Post",
+            Router: `/`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:CityController"],
+        beego.ControllerComments{
+            Method: "GetCities",
+            Router: `/list/`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"],
+        beego.ControllerComments{
             Method: "Post",
             Router: `/`,
             AllowHTTPMethods: []string{"post"},
@@ -45,9 +72,18 @@ func init() {
 
     beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"],
         beego.ControllerComments{
-            Method: "Post",
+            Method: "DeleteSatellite",
             Router: `/`,
-            AllowHTTPMethods: []string{"post"},
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:SateController"],
+        beego.ControllerComments{
+            Method: "GetSatellites",
+            Router: `/list/`,
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -66,6 +102,24 @@ func init() {
             Method: "Post",
             Router: `/`,
             AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:StationController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:StationController"],
+        beego.ControllerComments{
+            Method: "DeleteStation",
+            Router: `/`,
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["satellite_calculator/controllers:StationController"] = append(beego.GlobalControllerRouter["satellite_calculator/controllers:StationController"],
+        beego.ControllerComments{
+            Method: "GetStations",
+            Router: `/list/`,
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

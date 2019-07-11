@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "beego satellite_calculator API",
-        "description": "beego has a very cool tools to autogenerate documents for your API",
-        "version": "1.0.0",
+        "title": "satellite_calculator API",
+        "description": "An useful tool to do the satellite link budget calculate",
+        "version": "1.0.1",
         "termsOfService": "http://beego.me/",
         "contact": {
             "email": "hetao7@pku.edu.cn"
@@ -98,6 +98,71 @@
                         "description": "body is empty"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "city"
+                ],
+                "description": "Delete city",
+                "operationId": "CityController.delete city",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of city",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/city/list/": {
+            "get": {
+                "tags": [
+                    "city"
+                ],
+                "description": "Get cities",
+                "operationId": "CityController.get_cities",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "the offset",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "count",
+                        "description": "the count",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.City"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
             }
         },
         "/satellite/": {
@@ -163,6 +228,78 @@
                         "description": "body is empty"
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "satellite"
+                ],
+                "description": "Delete satellite",
+                "operationId": "SateController.delete satellite",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of satellite",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fre_type",
+                        "description": "the fre_type of satellite",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/satellite/list/": {
+            "get": {
+                "tags": [
+                    "satellite"
+                ],
+                "description": "Get satellites",
+                "operationId": "SateController.get_satellites",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "the offset",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "count",
+                        "description": "the count",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Satellite"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
             }
         },
         "/station/": {
@@ -222,6 +359,78 @@
                         "description": "",
                         "schema": {
                             "$ref": "#/definitions/models.Station"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "station"
+                ],
+                "description": "Delete station",
+                "operationId": "StationController.delete station",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "description": "the name of station",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fre_type",
+                        "description": "the fre_type of station",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    },
+                    "403": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/station/list/": {
+            "get": {
+                "tags": [
+                    "station"
+                ],
+                "description": "Get stations",
+                "operationId": "StationController.get_stations",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "description": "the offset",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "in": "query",
+                        "name": "count",
+                        "description": "the count",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Station"
+                            }
                         }
                     },
                     "403": {

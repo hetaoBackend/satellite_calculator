@@ -76,3 +76,39 @@ func AddStation(stationInfo Station) (Station, error) {
 	DB.Update(&p2)
 	return p2, nil
 }
+
+func GetStations(offset, count int32) ([]*Station, error) {
+	if offset < 0 || count <= 0 {
+		return nil, errors.New("invalid params")
+	}
+	stations := make([]*Station, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("station")
+	num, err := qs.Limit(count, offset).All(&stations)
+	if err != nil {
+		logs.Error("Get stations error, error: ", err)
+		return nil, err
+	}
+	logs.Info("Get %v station rows", num)
+	return stations, nil
+}
+
+func DeleteStation(name, freType string) error {
+	if name == "" || freType == "" {
+		return errors.New("invalid params")
+	}
+	p2 := Station{Name: name, FreType:freType}
+	// 查询
+	DB := orm.NewOrm()
+	num, err := DB.Delete(&p2, "Name", "FreType")
+	if err == orm.ErrNoRows {
+		logs.Error("查询不到")
+		return err
+	} else if err == orm.ErrMissPK {
+		logs.Error("找不到主键")
+		return err
+	} else {
+		logs.Info("delete %v station rows", num)
+	}
+	return nil
+}

@@ -16,7 +16,7 @@ type City struct {
 
 func GetCity(name string) (*City, error) {
 	if name == "" {
-		return &City{}, nil
+		return &City{}, errors.New("invalid params")
 	}
 	p2 := City{Name: name}
 	// 查询
@@ -32,6 +32,42 @@ func GetCity(name string) (*City, error) {
 		logs.Info(p2)
 	}
 	return &p2, nil
+}
+
+func GetCities(offset, count int32) ([]*City, error) {
+	if offset < 0 || count <= 0 {
+		return nil, errors.New("invalid params")
+	}
+	cities := make([]*City, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("city")
+	num, err := qs.Limit(count, offset).All(&cities)
+	if err != nil {
+		logs.Error("Get cities error, error: ", err)
+		return nil, err
+	}
+	logs.Info("Get %v city rows", num)
+	return cities, nil
+}
+
+func DeleteCity(name string) error {
+	if name == "" {
+		return errors.New("invalid params")
+	}
+	p2 := City{Name: name}
+	// 查询
+	DB := orm.NewOrm()
+	num, err := DB.Delete(&p2, "Name")
+	if err == orm.ErrNoRows {
+		logs.Error("查询不到")
+		return err
+	} else if err == orm.ErrMissPK {
+		logs.Error("找不到主键")
+		return err
+	} else {
+		logs.Info("delete %v city rows", num)
+	}
+	return nil
 }
 
 func AddCity(cityInfo City) (City, error) {

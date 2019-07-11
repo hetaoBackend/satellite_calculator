@@ -12,7 +12,7 @@ func main() {
 		beego.BConfig.WebConfig.DirectoryIndex = true
 		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
 	}
-	err := os.MkdirAll("log/", 0775)
+	err := os.MkdirAll("logs/", 0775)
 	if err != nil {
 		logs.Error("mkdir log error: ", err)
 		return

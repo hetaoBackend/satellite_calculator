@@ -76,3 +76,39 @@ func AddSate(sateInfo Satellite) (Satellite, error) {
 	DB.Update(&p2)
 	return p2, nil
 }
+
+func GetSatellites(offset, count int32) ([]*Satellite, error) {
+	if offset < 0 || count <= 0 {
+		return nil, errors.New("invalid params")
+	}
+	satellites := make([]*Satellite, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("satellite")
+	num, err := qs.Limit(count, offset).All(&satellites)
+	if err != nil {
+		logs.Error("Get satellites error, error: ", err)
+		return nil, err
+	}
+	logs.Info("Get %v satellite rows", num)
+	return satellites, nil
+}
+
+func DeleteSatellite(name, freType string) error {
+	if name == "" || freType == "" {
+		return errors.New("invalid params")
+	}
+	p2 := Satellite{Name: name, FreType:freType}
+	// 查询
+	DB := orm.NewOrm()
+	num, err := DB.Delete(&p2, "Name", "FreType")
+	if err == orm.ErrNoRows {
+		logs.Error("查询不到")
+		return err
+	} else if err == orm.ErrMissPK {
+		logs.Error("找不到主键")
+		return err
+	} else {
+		logs.Info("delete %v satellite rows", num)
+	}
+	return nil
+}
