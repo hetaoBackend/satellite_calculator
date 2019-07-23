@@ -12,6 +12,7 @@ services:
       - WAIT_FOR_PORT=3306
     volumes:
       - "./logs/:/satellite_calculator/logs/"
+      - "../static/:/satellite_calculator/static/"
     restart: on-failure
     depends_on:
       link_budget_db:

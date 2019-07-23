@@ -3,6 +3,7 @@ MAINTAINER hetao <hetao7@pku.edu.cn>
 
 ADD views /satellite_calculator/views
 ADD conf /satellite_calculator/conf
+RUN cd /satellite_calculator/conf && mv app_docker.conf app.conf
 ADD static /satellite_calculator/static
 ADD satellite_calculator /satellite_calculator/satellite_calculator
 ADD swagger /satellite_calculator/swagger
@@ -10,6 +11,7 @@ ADD swagger /satellite_calculator/swagger
 EXPOSE 8080
 
 VOLUME ["/satellite_calculator/logs"]
+VOLUME ["/satellite_calculator/static"]
 
 WORKDIR /satellite_calculator
 ENTRYPOINT ["./satellite_calculator"]

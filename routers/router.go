@@ -6,8 +6,11 @@
 package routers
 
 import (
-	"satellite_calculator/controllers"
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
+	"net/http"
+	"satellite_calculator/controllers"
+	"strings"
 )
 
 func init() {
@@ -35,4 +38,13 @@ func init() {
 		),
 	)
 	beego.AddNamespace(ns)
+	beego.InsertFilter("/", beego.BeforeRouter, TransparentStatic)
+	beego.InsertFilter("/*", beego.BeforeRouter, TransparentStatic)
+}
+
+func TransparentStatic(ctx *context.Context) {
+	if strings.Index(ctx.Request.URL.Path, "v1/") >= 0 {
+		return
+	}
+	http.ServeFile(ctx.ResponseWriter, ctx.Request, "static/"+ctx.Request.URL.Path)
 }
